@@ -14,16 +14,29 @@
 
 
 <div class="container-fluid mt-3" id="app">
-    <input type="text" class="form-control" v-model="criterioDeBusqueda"
+    <h4> Filtrar Usuario </h4>
+    <input type="text" class="form-control alert alert-light" v-model="criterioDeBusqueda"
         placeholder="Ingresar un criterio de busqueda...">
     <br>
+    <p  v-if="faltanCaracteres" class="alert alert-danger"> 
+        Debe ingresar al menos 3 caracteres 
+    </p>
     <div class="card-deck m-0">
         <div class="row">
-            <div class="col" v-for="persona in personasFiltradas">
+            <div v-if="faltanCaracteres" class="col" v-for= "persona in personas">
                 <div class="card mb-3">
                     <div class="card-body">
-                        <h5 class="card-title">{{getNombreCompleto(persona)}}</h5>
-                        <p class="card-text">dni {{persona.dni}}</p>
+                        <h5 class="card-title">{{ getNombreCompleto(persona) }}</h5>
+                        <p class="card-text"> dni {{persona.dni}} </p>
+                        <a href="#" class="card-link">{{persona.correo}}</a>
+                    </div>
+                </div>
+            </div>
+            <div v-if="!faltanCaracteres" class="col" v-for= "persona in personasFiltradas">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ getNombreCompleto(persona) }}</h5>
+                        <p class="card-text"> dni {{persona.dni}} </p>
                         <a href="#" class="card-link">{{persona.correo}}</a>
                     </div>
                 </div>
@@ -33,7 +46,7 @@
 
 </div>
 
-</html>
+</html>     
 
 <script>
     new Vue({
@@ -49,10 +62,34 @@
                     dni: "20442873"
                 },
                 {
-                    nombre: "...",
-                    apellido: "...",
-                    correo: "...",
-                    dni: "..."
+                    nombre: "Bruno",
+                    apellido: "Bonino",
+                    correo: "brunobonino1995@gmail.com",
+                    dni: "38658340"
+                },
+                {
+                    nombre: "Eugenia",
+                    apellido: "Levis",
+                    correo: "eugelevis@gmail.com",
+                    dni: "40543231"
+                },
+                {
+                    nombre: "Enrique",
+                    apellido: "Puente",
+                    correo: "epuentes@gmail.com",
+                    dni: "30584625"
+                },
+                {
+                    nombre: "Tita",
+                    apellido: "Rhodesia",
+                    correo: "titar@gmail.com",
+                    dni: "92450025"
+                },
+                {
+                    nombre: "Test",
+                    apellido: "test",
+                    correo: "tester@gmail.com",
+                    dni: "11111111"
                 },
             ]
 
@@ -63,12 +100,16 @@
                     let registroCompleto = `${persona.nombre} ${persona.apellido} ${persona.dni} ${persona.correo}`
                     return registroCompleto.toLowerCase().includes(this.criterioDeBusqueda.toLowerCase())
                 });
-            }
+            },
+            faltanCaracteres(){
+                let cant = String(this.criterioDeBusqueda).length;
+                return cant < 3 && cant != 0;
+            },
         },
         methods: {
             getNombreCompleto(persona) {
                 return `${persona.nombre} ${persona.apellido}`
-            }
+            },
         }
     });
 </script>
